@@ -46,7 +46,7 @@
     "mz": "2.7.0",
     "npm-registry-client": "8.6.0",
     "request-promise": "4.2.2",
-    "source-map-support": "0.5.6"
+    "source-map-support": "0.5.9"
   },
   "devDependencies": {
     "@commitlint/cli": "7.0.0",
