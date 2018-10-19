@@ -59,7 +59,7 @@
     "@types/js-yaml": "3.11.2",
     "@types/mz": "0.0.32",
     "@types/request-promise": "4.1.42",
-    "husky": "0.14.3",
+    "husky": "1.1.2",
     "json-schema-to-typescript": "6.0.1",
     "prettier": "1.14.3",
     "semantic-release": "15.10.3",
