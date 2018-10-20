@@ -28,9 +28,9 @@ async function main(): Promise<void> {
     let title: string | undefined
     let description: string | undefined
     let publisher: string | undefined
-    let icon: string | undefined
+
     try {
-        ;({ name, title, description, publisher, icon } = JSON.parse(await readFile('package.json', 'utf-8')))
+        ;({ name, title, description, publisher } = JSON.parse(await readFile('package.json', 'utf-8')))
     } catch (err) {
         if (err.code !== 'ENOENT') {
             throw err
@@ -41,7 +41,7 @@ async function main(): Promise<void> {
         console.log(`Extension name is "${name}"`)
     } else {
         name = await prompt.input({
-            message: 'What should the name of the extension be (lowercase-hyphen-style)?',
+            message: 'What should the name of the extension be (kebab-case)?',
         })
     }
 
