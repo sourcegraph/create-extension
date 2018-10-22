@@ -8,10 +8,10 @@
 
 CLI to generate the skeleton for a Sourcegraph extension.
 
-## Use it
+## Create an extension
 
 ```shell
 mkdir my-extension
 cd my-extension
-npm init @sourcegraph-extension
+npm init @sourcegraph/extension
 ```
