@@ -9,10 +9,6 @@ import * as prompt from './prompt'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
 
-// const createCLIError = (message: string) => {
-//     throw Object.assign(new Error(message), { showStack: false })
-// }
-
 async function main(): Promise<void> {
     console.log(['',
                 '*️⃣  Welcome to the Sourcegraph extension creator',
@@ -49,7 +45,7 @@ async function main(): Promise<void> {
         console.log(`Extension title is "${title}"`)
     } else {
         title = await prompt.input({
-            message: 'What should the title of the extension be (Title Case Style)?',
+            message: 'What should the title of the extension be (Sentence case)?',
         })
     }
 
@@ -84,6 +80,7 @@ async function main(): Promise<void> {
             compilerOptions: {
                 target: 'es2016',
                 module: 'esnext',
+                moduleResolution: 'node',
                 sourceMap: true,
                 declaration: true,
                 outDir: 'dist',
@@ -138,8 +135,6 @@ async function main(): Promise<void> {
             title,
             description,
             publisher,
-            icon:
-                'https://images.ctfassets.net/le3mxztn6yoo/t4Qpcq5kA0AYM24Ws4mOk/4edf5502a936bbec90c262fa00355aed/sourcegraph-mark.png',
             activationEvents: ['*'],
             contributes: {
                 actions: [],
@@ -171,7 +166,7 @@ async function main(): Promise<void> {
         await writeFile(
             'src/extension.ts',
             [
-                "import * as sourcegraph from 'sourcegraph';",
+                "import * as sourcegraph from 'sourcegraph'",
                 '',
                 'export function activate(): void {',
                 "   sourcegraph.languages.registerHoverProvider(['*'], {",
