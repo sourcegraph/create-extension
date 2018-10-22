@@ -10,10 +10,7 @@ import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
 
 async function main(): Promise<void> {
-    console.log(['',
-                '*️⃣  Welcome to the Sourcegraph extension creator',
-                '',
-    ].join('\n'))
+    console.log(['', '*️⃣  Welcome to the Sourcegraph extension creator', ''].join('\n'))
 
     if (!(await exists('.git'))) {
         console.log('📘 .git directory not found, initilizing git repository')
