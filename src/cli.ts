@@ -10,7 +10,7 @@ import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
 
 async function main(): Promise<void> {
-    console.log(['', '*️⃣  Welcome to the Sourcegraph extension creator', ''].join('\n'))
+    console.log(['', 'Welcome to the Sourcegraph extension creator!', ''].join('\n'))
 
     if (!(await exists('.git'))) {
         console.log('📘 .git directory not found, initilizing git repository')
@@ -117,6 +117,7 @@ async function main(): Promise<void> {
             '',
             '[*.md]',
             'trim_trailing_whitespace = false',
+            ''
         ].join('\n')
     )
 
@@ -163,7 +164,7 @@ async function main(): Promise<void> {
         await writeFile(
             'src/extension.ts',
             [
-                "import * as sourcegraph from 'sourcegraph'",
+                'import * as sourcegraph from \'sourcegraph\'',
                 '',
                 'export function activate(): void {',
                 "   sourcegraph.languages.registerHoverProvider(['*'], {",
@@ -171,7 +172,8 @@ async function main(): Promise<void> {
                 '   })',
                 '}',
                 '',
-                '// See https://about.sourcegraph.com/blog/extension-authoring for instructions and examples.',
+                '// Learn what else is possible by visiting the [Sourcegraph extension documentation](https://github.com/sourcegraph/sourcegraph-extension-docs)',
+                ''
             ].join('\n')
         )
     } catch (err) {
@@ -203,32 +205,39 @@ async function main(): Promise<void> {
         const readme = [
             `# ${title}`,
             '',
-            description,
+            description[description.length-1] === '.' ? description : description + '.',
             '',
             '## Prerequisites',
             '',
-            'Sourcegraph extensions are written in TypeScript are distributed as bundled JavaScript files that run on the client. For creation, publishing, and viewing, you need:',
+            'Sourcegraph extensions are written in TypeScript and are distributed as bundled JavaScript files that run on the client. For creation, publishing, and viewing, you need:',
             '',
-            '- **Creation**: Install [Node.js](https://nodejs.org) and [npm](https://npmjs.com)',
-            '- **Publishing**: Install the [Sourcegraph CLI (`src`)](https://github.com/sourcegraph/src-cli#installation) and create a [Sourcegraph.com account](https://sourcegraph.com/sign-up)',
-            '- **Viewing**: Install Sourcegraph extension for [Chrome](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/sourcegraph/).',
+            '- **Creation**: Install [Node.js](https://nodejs.org).',
+            '- **Publishing**: Install the [Sourcegraph CLI (`src`)](https://github.com/sourcegraph/src-cli#installation) and create a [Sourcegraph.com account](https://sourcegraph.com/sign-up).',
+            '- **Viewing**: Install the Sourcegraph extension for [Chrome](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/sourcegraph/).',
             '',
-            '## Setup',
+            '## Set up',
+            '',
             '```',
             `npm install`,
             '```',
             '',
-            '## Check check and lint',
+            '## Lint and type check',
+            '',
             '```',
             `npm run tslint`,
             `npm run typecheck`,
             '```',
             '',
             '## Publish',
+            '',
             '```',
             'src extensions publish',
             '```',
             '',
+            '## Sourecgraph extension API',
+            '',
+            'Visit the [Sourcegraph extension documentation](https://github.com/sourcegraph/sourcegraph-extension-docs) and check out some [Sourcegraph extension samples](https://github.com/sourcegraph/sourcegraph-extension-samples).',
+            ''
         ].join('\n')
         await writeFile('README.md', readme)
     }
