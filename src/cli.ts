@@ -117,7 +117,7 @@ async function main(): Promise<void> {
             '',
             '[*.md]',
             'trim_trailing_whitespace = false',
-            ''
+            '',
         ].join('\n')
     )
 
@@ -164,7 +164,7 @@ async function main(): Promise<void> {
         await writeFile(
             'src/extension.ts',
             [
-                'import * as sourcegraph from \'sourcegraph\'',
+                "import * as sourcegraph from 'sourcegraph'",
                 '',
                 'export function activate(): void {',
                 "   sourcegraph.languages.registerHoverProvider(['*'], {",
@@ -173,7 +173,7 @@ async function main(): Promise<void> {
                 '}',
                 '',
                 '// Learn what else is possible by visiting the [Sourcegraph extension documentation](https://github.com/sourcegraph/sourcegraph-extension-docs)',
-                ''
+                '',
             ].join('\n')
         )
     } catch (err) {
@@ -205,7 +205,7 @@ async function main(): Promise<void> {
         const readme = [
             `# ${title}`,
             '',
-            description[description.length-1] === '.' ? description : description + '.',
+            description[description.length - 1] === '.' ? description : description + '.',
             '',
             '## Prerequisites',
             '',
@@ -237,7 +237,7 @@ async function main(): Promise<void> {
             '## Sourecgraph extension API',
             '',
             'Visit the [Sourcegraph extension documentation](https://github.com/sourcegraph/sourcegraph-extension-docs) and check out some [Sourcegraph extension samples](https://github.com/sourcegraph/sourcegraph-extension-samples).',
-            ''
+            '',
         ].join('\n')
         await writeFile('README.md', readme)
     }
