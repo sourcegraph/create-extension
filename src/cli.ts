@@ -164,7 +164,7 @@ async function main(): Promise<void> {
         await writeFile(
             'src/extension.ts',
             [
-                'import * as sourcegraph from \'sourcegraph\'',
+                "import * as sourcegraph from 'sourcegraph'",
                 '',
                 'export function activate(): void {',
                 "   sourcegraph.languages.registerHoverProvider(['*'], {",
