@@ -10,7 +10,7 @@
     "dist"
   ],
   "bin": {
-    "src-create": "dist/cli.js"
+    "src-create-extension": "dist/cli.js"
   },
   "keywords": [
     "cli",
