@@ -58,7 +58,7 @@ async function main(): Promise<void> {
         console.log(`Publisher is "${publisher}"`)
     } else {
         publisher = await prompt.input({
-            message: 'What is your Sourcegraph organisation or username?',
+            message: 'What is your Sourcegraph organization or username?',
             default: 'SOURCEGRAPH_ORG_OR_USERNAME',
         })
     }
