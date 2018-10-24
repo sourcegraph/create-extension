@@ -144,16 +144,22 @@ async function main(): Promise<void> {
             },
             version: '0.0.0-DEVELOPMENT',
             license: licenseName,
-            main: 'dist/extension.js',
+            main: `dist/${name}.js`,
             scripts: {
                 tslint: "tslint -p tsconfig.json './src/**/*.ts'",
                 typecheck: 'tsc -p tsconfig.json',
-                build: 'parcel build --experimental-scope-hoisting --out-file extension.js src/extension.ts',
-                serve: 'parcel serve --no-hmr --no-source-maps --out-file extension.js src/extension.ts',
+                build: `parcel build --out-file dist/${name}.js src/${name}.ts`,
+                serve: `parcel serve --no-hmr --out-file ${name}.js src/${name}.ts`,
                 'watch:typecheck': 'tsc -p tsconfig.json -w',
                 'watch:build': 'tsc -p tsconfig.dist.json -w',
                 'sourcegraph:prepublish': 'npm run build',
             },
+            browserslist: [
+                'last 1 Chrome versions',
+                'last 1 Firefox versions',
+                'last 1 Edge versions',
+                'last 1 Safari versions',
+            ],
         }
         await writeFile('package.json', JSON.stringify(packageJson, null, 2))
     }
@@ -162,13 +168,13 @@ async function main(): Promise<void> {
         console.log('📂 Creating src directory')
         await mkdir('src')
         await writeFile(
-            'src/extension.ts',
+            `src/${name}.ts`,
             [
                 "import * as sourcegraph from 'sourcegraph'",
                 '',
                 'export function activate(): void {',
                 "   sourcegraph.languages.registerHoverProvider(['*'], {",
-                "       provideHover: () => ({ contents: { value: 'Hello world from the Sourcegraph extension creator! 🎉🎉🎉' } })",
+                `       provideHover: () => ({ contents: { value: 'Hello world from ${title}! 🎉🎉🎉' } })`,
                 '   })',
                 '}',
                 '',
