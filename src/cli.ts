@@ -149,7 +149,7 @@ async function main(): Promise<void> {
                 tslint: "tslint -p tsconfig.json './src/**/*.ts'",
                 typecheck: 'tsc -p tsconfig.json',
                 build: `parcel build --out-file dist/${name}.js src/${name}.ts`,
-                serve: `parcel serve --no-hmr --out-file ${name}.js src/${name}.ts`,
+                serve: `parcel serve --no-hmr --out-file dist/${name}.js src/${name}.ts`,
                 'watch:typecheck': 'tsc -p tsconfig.json -w',
                 'watch:build': 'tsc -p tsconfig.dist.json -w',
                 'sourcegraph:prepublish': 'npm run build',
