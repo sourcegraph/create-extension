@@ -4,7 +4,7 @@
   "description": "CLI to generate the skeleton for a Sourcegraph extension",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sourcegraph/create-extension.git"
+    "url": "https://github.com/sourcegraph/create-extension.git"
   },
   "files": [
     "dist"
