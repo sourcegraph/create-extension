@@ -240,7 +240,7 @@ async function main(): Promise<void> {
             'src extensions publish',
             '```',
             '',
-            '## Sourecgraph extension API',
+            '## Sourcegraph extension API',
             '',
             'Visit the [Sourcegraph extension documentation](https://github.com/sourcegraph/sourcegraph-extension-docs) and check out some [Sourcegraph extension samples](https://github.com/sourcegraph/sourcegraph-extension-samples).',
             '',
