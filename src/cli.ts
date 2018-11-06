@@ -178,7 +178,7 @@ async function main(): Promise<void> {
                 '   })',
                 '}',
                 '',
-                '// Learn what else is possible by visiting the [Sourcegraph extension documentation](https://github.com/sourcegraph/sourcegraph-extension-docs)',
+                '// Sourcegraph extension documentation: https://docs.sourcegraph.com/extensions/authoring',
                 '',
             ].join('\n')
         )
