@@ -41,9 +41,11 @@ async function main(): Promise<void> {
     if (title) {
         console.log(`Extension title is "${title}"`)
     } else {
-        title = await prompt.input({
-            message: 'What should the title of the extension be (Sentence case)?',
-        })
+        title =
+            'WIP: ' +
+            (await prompt.input({
+                message: 'What should the title of the extension be (Sentence case)?',
+            }))
     }
 
     if (description) {
@@ -216,6 +218,8 @@ async function main(): Promise<void> {
         ].join('\n')
         await writeFile('README.md', readme)
     }
+
+    console.log('⚠️ Remove "WIP:" from the title when this extension is ready for use.')
 
     setTimeout(() => process.exit(0), 100)
 }
