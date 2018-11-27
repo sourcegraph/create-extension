@@ -8,7 +8,7 @@
 
 CLI to generate the skeleton of a Sourcegraph extension.
 
-```shell
+```
 mkdir my-extension
 cd my-extension
 
