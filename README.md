@@ -1,4 +1,4 @@
-# Sourcegraph extension creator
+# Create Sourcegraph extension
 
 [![npm](https://img.shields.io/npm/v/@sourcegraph/create-extension.svg)](https://www.npmjs.com/package/@sourcegraph/create-extension)
 [![downloads](https://img.shields.io/npm/dt/@sourcegraph/create-extension.svg)](https://www.npmjs.com/package/@sourcegraph/create-extension)
@@ -8,10 +8,13 @@
 
 CLI to generate the skeleton of a Sourcegraph extension.
 
-## Create an extension
-
 ```shell
 mkdir my-extension
 cd my-extension
-npm init @sourcegraph/extension
+
+# npm
+npm init sourcegraph-extension
+
+# yarn
+yarn create sourcegraph-extension
 ```
