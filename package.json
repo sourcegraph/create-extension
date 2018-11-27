@@ -1,5 +1,5 @@
 {
-  "name": "@sourcegraph/create-extension",
+  "name": "create-sourcegraph-extension",
   "version": "0.0.0-DEVELOPMENT",
   "description": "CLI to generate the skeleton for a Sourcegraph extension",
   "repository": {
@@ -10,7 +10,7 @@
     "dist"
   ],
   "bin": {
-    "src-create-extension": "dist/cli.js"
+    "create-sourcegraph-extension": "./dist/cli.js"
   },
   "keywords": [
     "cli",
