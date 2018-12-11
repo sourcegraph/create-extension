@@ -53,7 +53,7 @@ async function main(): Promise<void> {
     }
 
     if (!(await exists('.git'))) {
-        console.log('📘 .git directory not found, initializing git repository')
+        console.log('📘 .git directory not found, initializing git repository.\n')
         await exec('git', ['init'])
     }
 
@@ -68,7 +68,7 @@ async function main(): Promise<void> {
                 url: url!.href,
             }
         } else {
-            console.log('📘  Unable to set the "repository" field for package.json as a git remote was not found. You should set this manually before publishing your extension.\n')
+            console.log('📘  Unable to set the "repository" field in package.json as a git remote was not found. You should set this manually before publishing your extension.\n')
         }
     }
 
