@@ -30,7 +30,7 @@ async function main(): Promise<void> {
                     .replace('https//', 'https:/')
             )
         } catch (e) {
-            return
+            return undefined
         }
     }
 
