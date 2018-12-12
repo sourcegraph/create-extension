@@ -3,30 +3,67 @@ import 'source-map-support/register'
 
 import chalk from 'chalk'
 import exec = require('execa')
+import GitUrlParse = require('git-url-parse')
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
 
+interface Repository {
+    type: string
+    url: string
+    directory?: string
+}
+
+async function getHttpsGitRemoteUrl(): Promise<string | undefined> {
+    try {
+        const gitUrl = GitUrlParse((await exec.shell('git remote get-url origin')).stdout)
+        return `https://${gitUrl.resource}${gitUrl.pathname}`
+    } catch (e) {
+        return undefined
+    }
+}
+
 async function main(): Promise<void> {
     console.log(['', 'Welcome to the Sourcegraph extension creator!', ''].join('\n'))
 
-    if (!(await exists('.git'))) {
-        console.log('📘 .git directory not found, initilizing git repository')
-        await exec('git', ['init'])
-    }
-
     let name: string | undefined
+    let repository: Repository | undefined
     let title: string | undefined
     let description: string | undefined
     let publisher: string | undefined
+    let license: string | undefined
 
     try {
-        ;({ name, title, description, publisher } = JSON.parse(await readFile('package.json', 'utf-8')))
+        ;({ name, title, description, publisher, repository, license } = JSON.parse(
+            await readFile('package.json', 'utf-8')
+        ))
     } catch (err) {
         if (err.code !== 'ENOENT') {
             throw err
+        }
+    }
+
+    if (!(await exists('.git'))) {
+        console.log('📘 .git directory not found, initializing git repository.\n')
+        await exec('git', ['init'])
+    }
+
+    if (repository) {
+        console.log(`Extension ${repository.type} repository url is "${repository.url}"`)
+    } else {
+        const url = await getHttpsGitRemoteUrl()
+
+        if (url) {
+            repository = {
+                type: 'git',
+                url,
+            }
+        } else {
+            console.log(
+                '📘  Unable to set the "repository" field in package.json as a git remote was not found. You should set this manually before publishing your extension.\n'
+            )
         }
     }
 
@@ -65,11 +102,15 @@ async function main(): Promise<void> {
         })
     }
 
-    const licenseName = await prompt.choices({
-        message: 'License?',
-        choices: ['UNLICENSED', 'MIT'],
-        default: 'MIT',
-    })
+    if (license) {
+        console.log(`License is "${license}"`)
+    } else {
+        license = await prompt.choices({
+            message: 'License?',
+            choices: ['UNLICENSED', 'MIT'],
+            default: 'MIT',
+        })
+    }
 
     if (await exists('tsconfig.json')) {
         console.log('📄 tsconfig.json already exists, skipping creation')
@@ -145,7 +186,8 @@ async function main(): Promise<void> {
                 configuration: {},
             },
             version: '0.0.0-DEVELOPMENT',
-            license: licenseName,
+            repository,
+            license,
             main: `dist/${name}.js`,
             scripts: {
                 tslint: "tslint -p tsconfig.json './src/**/*.ts'",
