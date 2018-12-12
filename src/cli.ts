@@ -3,6 +3,7 @@ import 'source-map-support/register'
 
 import chalk from 'chalk'
 import exec = require('execa')
+import GitUrlParse = require('git-url-parse')
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
@@ -15,25 +16,16 @@ interface Repository {
     directory?: string
 }
 
-async function main(): Promise<void> {
-    async function getHTTPSGitRemoteURL(): Promise<URL | undefined> {
-        try {
-            return new URL(
-                // Simpler than using URL regex
-                exec
-                    .shellSync('git remote -v')
-                    .stdout.split('\n')[0]
-                    .split('\t')[1]
-                    .split(' ')[0]
-                    .replace(':', '/')
-                    .replace('git@', 'https://')
-                    .replace('https//', 'https:/')
-            )
-        } catch (e) {
-            return undefined
-        }
+async function getHttpsGitRemoteUrl(): Promise<string | undefined> {
+    try {
+        const gitUrl = GitUrlParse((await exec.shell('git remote get-url origin')).stdout)
+        return `https://${gitUrl.resource}${gitUrl.pathname}`
+    } catch (e) {
+        return undefined
     }
+}
 
+async function main(): Promise<void> {
     console.log(['', 'Welcome to the Sourcegraph extension creator!', ''].join('\n'))
 
     let name: string | undefined
@@ -61,12 +53,12 @@ async function main(): Promise<void> {
     if (repository) {
         console.log(`Extension ${repository.type} repository url is "${repository.url}"`)
     } else {
-        const url = await getHTTPSGitRemoteURL()
+        const url = await getHttpsGitRemoteUrl()
 
         if (url) {
             repository = {
                 type: 'git',
-                url: url!.href,
+                url,
             }
         } else {
             console.log(

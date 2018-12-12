@@ -38,23 +38,24 @@
       "@commitlint/config-conventional"
     ]
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "chalk": "2.4.1",
     "execa": "1.0.0",
+    "git-url-parse": "^11.1.1",
     "inquirer": "6.2.1",
     "js-yaml": "3.12.0",
     "mz": "2.7.0",
     "npm-registry-client": "8.6.0",
     "request-promise": "4.2.2",
-    "source-map-support": "0.5.9"
-  },
-  "devDependencies": {
+    "source-map-support": "0.5.9",
     "@commitlint/cli": "7.2.1",
     "@commitlint/config-conventional": "7.1.2",
     "@sourcegraph/prettierrc": "2.2.0",
     "@sourcegraph/tsconfig": "3.0.0",
     "@sourcegraph/tslint-config": "12.1.0",
     "@types/execa": "0.9.0",
+    "@types/git-url-parse": "^9.0.0",
     "@types/inquirer": "0.0.43",
     "@types/js-yaml": "3.11.2",
     "@types/mz": "0.0.32",
