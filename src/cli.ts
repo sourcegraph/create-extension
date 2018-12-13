@@ -28,6 +28,7 @@ async function getHttpsGitRemoteUrl(): Promise<string | undefined> {
 async function main(): Promise<void> {
     console.log(['', 'Welcome to the Sourcegraph extension creator!', ''].join('\n'))
 
+    const schema = 'https://raw.githubusercontent.com/sourcegraph/sourcegraph/master/shared/src/schema/extension.schema.json'
     let name: string | undefined
     let repository: Repository | undefined
     let title: string | undefined
@@ -172,6 +173,7 @@ async function main(): Promise<void> {
     } else {
         console.log('📄 Adding package.json')
         const packageJson: JsonSchemaForNpmPackageJsonFiles = {
+            $schema: schema,
             name,
             title,
             description,
