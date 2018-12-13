@@ -255,7 +255,7 @@ async function main(): Promise<void> {
     } else {
         console.log('📄 Adding README')
         const readme = [
-            `#${title} Sourcegraph extension`,
+            `# ${title} Sourcegraph extension`,
             '',
             description[description.length - 1] === '.' ? description : description + '.',
             '',
