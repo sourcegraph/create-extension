@@ -9,6 +9,8 @@ import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
+import createSymLink = require('create-symlink')
+import { resolve } from 'path'
 
 interface Repository {
     type: string
@@ -209,6 +211,16 @@ async function main(): Promise<void> {
         }
         await writeFile('package.json', JSON.stringify(packageJson, null, 2))
     }
+
+    console.log('📄 ➡ ️📄 symlinking dist/package.json -> package.json')
+    try {
+        await mkdir('dist')
+    } catch (err) {
+        if (err.code !== 'EEXIST') {
+            throw err
+        }
+    }
+    await createSymLink(resolve('./package.json'), resolve('./dist/package.json'))
 
     try {
         console.log('📂 Creating src directory')
