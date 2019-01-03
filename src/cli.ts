@@ -28,18 +28,16 @@ async function getHttpsGitRemoteUrl(): Promise<string | undefined> {
 async function main(): Promise<void> {
     console.log(['', 'Welcome to the Sourcegraph extension creator!', ''].join('\n'))
 
-    const schema = 'https://raw.githubusercontent.com/sourcegraph/sourcegraph/master/shared/src/schema/extension.schema.json'
+    const schema =
+        'https://raw.githubusercontent.com/sourcegraph/sourcegraph/master/shared/src/schema/extension.schema.json'
     let name: string | undefined
     let repository: Repository | undefined
-    let title: string | undefined
     let description: string | undefined
     let publisher: string | undefined
     let license: string | undefined
 
     try {
-        ;({ name, title, description, publisher, repository, license } = JSON.parse(
-            await readFile('package.json', 'utf-8')
-        ))
+        ;({ name, description, publisher, repository, license } = JSON.parse(await readFile('package.json', 'utf-8')))
     } catch (err) {
         if (err.code !== 'ENOENT') {
             throw err
@@ -74,16 +72,6 @@ async function main(): Promise<void> {
         name = await prompt.input({
             message: 'What should the name of the extension be (kebab-case)?',
         })
-    }
-
-    if (title) {
-        console.log(`Extension title is "${title}"`)
-    } else {
-        title =
-            'WIP: ' +
-            (await prompt.input({
-                message: 'What should the title of the extension be (Sentence case)?',
-            }))
     }
 
     if (description) {
@@ -175,10 +163,12 @@ async function main(): Promise<void> {
         const packageJson: JsonSchemaForNpmPackageJsonFiles = {
             $schema: schema,
             name,
-            title,
             description,
             publisher,
             activationEvents: ['*'],
+            wip: true,
+            categories: [],
+            tags: [],
             contributes: {
                 actions: [],
                 menus: {
@@ -223,7 +213,7 @@ async function main(): Promise<void> {
                 "       sourcegraph.languages.registerHoverProvider(['*'], {",
                 '           provideHover: () => ({',
                 '               contents: {',
-                `                   value: 'Hello world from ${title}! 🎉🎉🎉',`,
+                `                   value: 'Hello world from ${name}! 🎉🎉🎉',`,
                 '                   kind: sourcegraph.MarkupKind.Markdown',
                 '               }',
                 '           }),',
@@ -262,7 +252,7 @@ async function main(): Promise<void> {
     } else {
         console.log('📄 Adding README')
         const readme = [
-            `# ${title} Sourcegraph extension`,
+            `# ${name} (Sourcegraph extension)`,
             '',
             description[description.length - 1] === '.' ? description : description + '.',
             '',
@@ -270,7 +260,7 @@ async function main(): Promise<void> {
         await writeFile('README.md', readme)
     }
 
-    console.log('⚠️ Remove "WIP:" from the title when this extension is ready for use.')
+    console.log('⚠️ Remove `"wip": true` from the package.json when this extension is ready for use.')
 
     setTimeout(() => process.exit(0), 100)
 }
