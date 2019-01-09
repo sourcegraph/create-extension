@@ -185,7 +185,7 @@ async function main(): Promise<void> {
                 tslint: "tslint -p tsconfig.json './src/**/*.ts'",
                 typecheck: 'tsc -p tsconfig.json',
                 build: `parcel build --out-file dist/${name}.js src/${name}.ts`,
-                'symlink-package': 'node dev/symlinkPackage.js',
+                'symlink-package': 'mkdirp dist && lnfs ./package.json ./dist/package.json',
                 serve: `npm run symlink-package && parcel serve --no-hmr --out-file dist/${name}.js src/${name}.ts`,
                 'watch:typecheck': 'tsc -p tsconfig.json -w',
                 'watch:build': 'tsc -p tsconfig.dist.json -w',
@@ -200,25 +200,6 @@ async function main(): Promise<void> {
         }
         await writeFile('package.json', JSON.stringify(packageJson, null, 2))
     }
-
-    console.log('📂 Creating dev directory')
-    await mkdir('dev')
-    await writeFile('dev/symlinkPackage.js', [
-        "const createSymlink = require('create-symlink')",
-        "const { existsSync } = require('fs')",
-        "const mkdirp = require('mkdirp-promise')",
-        "const { resolve } = require('path')",
-        '',
-        "mkdirp('dist').then(async () => {",
-        "   if (!existsSync('./dist/package.json')) {",
-        "       await createSymlink(resolve('./package.json'), resolve('./dist/package.json'))",
-        '   }',
-        '   process.exit(0)',
-        '}).catch(err => {',
-        '   console.error(err)',
-        '   process.exit(1)',
-        '})',
-    ].join('\n'))
 
     try {
         console.log('📂 Creating src directory')
@@ -263,8 +244,8 @@ async function main(): Promise<void> {
             'tslint',
             '@sourcegraph/tslint-config',
             '@sourcegraph/tsconfig',
-            'create-symlink',
-            'mkdirp-promise',
+            'lnfs-cli',
+            'mkdirp',
         ],
         { stdio: 'inherit' }
     )
