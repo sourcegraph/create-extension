@@ -189,7 +189,7 @@ async function main(): Promise<void> {
                 serve: `npm run symlink-package && parcel serve --no-hmr --out-file dist/${name}.js src/${name}.ts`,
                 'watch:typecheck': 'tsc -p tsconfig.json -w',
                 'watch:build': 'tsc -p tsconfig.dist.json -w',
-                'sourcegraph:prepublish': 'npm run build',
+                'sourcegraph:prepublish': 'npm run typecheck && npm run build',
             },
             browserslist: [
                 'last 1 Chrome versions',
