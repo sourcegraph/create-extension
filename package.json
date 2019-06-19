@@ -61,7 +61,7 @@
     "@types/mz": "0.0.32",
     "@types/request-promise": "4.1.42",
     "@types/git-url-parse": "9.0.0",
-    "husky": "1.2.0",
+    "husky": "2.4.1",
     "json-schema-to-typescript": "6.1.0",
     "prettier": "1.17.1",
     "semantic-release": "15.12.5",
