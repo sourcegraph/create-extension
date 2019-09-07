@@ -62,7 +62,7 @@
     "@types/request-promise": "4.1.42",
     "@types/git-url-parse": "9.0.0",
     "husky": "1.2.0",
-    "json-schema-to-typescript": "6.1.0",
+    "json-schema-to-typescript": "7.1.0",
     "prettier": "1.18.2",
     "semantic-release": "15.12.5",
     "tslint": "5.19.0",
