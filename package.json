@@ -65,7 +65,7 @@
     "json-schema-to-typescript": "6.1.0",
     "prettier": "1.18.2",
     "semantic-release": "15.12.5",
-    "tslint": "5.20.0",
+    "tslint": "5.20.1",
     "typescript": "3.2.2"
   },
   "husky": {
