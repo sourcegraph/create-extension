@@ -2,8 +2,8 @@
 import 'source-map-support/register'
 
 import chalk from 'chalk'
-import exec = require('execa')
-import GitUrlParse = require('git-url-parse')
+import exec from 'execa'
+import GitUrlParse from 'git-url-parse'
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
@@ -257,7 +257,7 @@ async function main(): Promise<void> {
         const readme = [
             `# ${name} (Sourcegraph extension)`,
             '',
-            description[description.length - 1] === '.' ? description : description + '.',
+            description.endsWith('.') ? description : description + '.',
             '',
         ].join('\n')
         await writeFile('README.md', readme)
