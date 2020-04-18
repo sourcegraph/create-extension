@@ -25,10 +25,10 @@
   "scripts": {
     "eslint": "eslint 'src/**/*.ts'",
     "build": "tsc -p .",
-    "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package.ts",
-    "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis.ts",
-    "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig.ts",
-    "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint.ts",
+    "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package-schema.ts",
+    "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis-schema.ts",
+    "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig-schema.ts",
+    "eslintrc-schema": "download http://json.schemastore.org/eslintrc | json2ts | prettier --parser typescript > src/eslintrc-schema.ts",
     "prettier": "prettier '**/*.{js?(on),ts}' --write --list-different",
     "semantic-release": "semantic-release",
     "pre-commit": "yarn run eslint && yarn run prettier"
@@ -61,9 +61,10 @@
     "@types/js-yaml": "3.12.3",
     "@types/mz": "0.0.32",
     "@types/request-promise": "4.1.42",
+    "download-cli": "^1.1.1",
     "eslint": "^6.8.0",
     "husky": "1.2.0",
-    "json-schema-to-typescript": "6.1.0",
+    "json-schema-to-typescript": "8.2.0",
     "prettier": "2.0.3",
     "semantic-release": "15.12.5",
     "typescript": "3.8.3"
