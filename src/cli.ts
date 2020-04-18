@@ -96,8 +96,8 @@ async function main(): Promise<void> {
     } else {
         license = await prompt.choices({
             message: 'License?',
-            choices: ['UNLICENSED', 'MIT'],
-            default: 'MIT',
+            choices: ['UNLICENSED', 'Apache-2.0'],
+            default: 'Apache-2.0',
         })
     }
 
