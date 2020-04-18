@@ -1,6 +1,0 @@
-{
-  "extends": "@sourcegraph/tslint-config",
-  "rules": {
-    "await-promise": [true, "RequestPromise"]
-  }
-}
