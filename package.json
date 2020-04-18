@@ -31,7 +31,7 @@
     "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint.ts",
     "prettier": "prettier '**/*.{js?(on),ts}' --write --list-different",
     "semantic-release": "semantic-release",
-    "pre-commit": "npm run tslint && npm run prettier"
+    "pre-commit": "yarn run tslint && yarn run prettier"
   },
   "commitlint": {
     "extends": [
