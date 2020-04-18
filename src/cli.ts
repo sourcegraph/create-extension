@@ -5,10 +5,10 @@ import chalk from 'chalk'
 import exec from 'execa'
 import GitUrlParse from 'git-url-parse'
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
-import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
+import { JSONSchemaForNPMPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
-import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
-import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
+import { JSONSchemaForTheTypeScriptCompilerSConfigurationFile } from './tsconfig-schema'
+import { JSONSchemaForESLintConfigurationFiles } from './eslintrc-schema'
 
 interface Repository {
     type: string
@@ -104,12 +104,12 @@ async function main(): Promise<void> {
     if (await exists('tsconfig.json')) {
         console.log('📄 tsconfig.json already exists, skipping creation')
     } else {
-        const tsconfigJson: JsonSchemaForTheTypeScriptCompilersConfigurationFile = {
+        const tsconfigJson: JSONSchemaForTheTypeScriptCompilerSConfigurationFile = {
             extends: './node_modules/@sourcegraph/tsconfig/tsconfig.json',
             compilerOptions: {
-                target: 'es2016',
-                module: 'esnext',
-                moduleResolution: 'node',
+                target: 'ES2019',
+                module: 'ESNext',
+                moduleResolution: 'Node',
                 sourceMap: true,
                 declaration: true,
                 outDir: 'dist',
@@ -122,14 +122,17 @@ async function main(): Promise<void> {
         await writeFile('tsconfig.json', JSON.stringify(tsconfigJson, null, 2))
     }
 
-    if (await exists('tslint.json')) {
-        console.log('📄 tslint.json already exists, skipping creation')
+    if (await exists('eslint.json')) {
+        console.log('📄 eslint.json already exists, skipping creation')
     } else {
-        console.log('📄 Adding tslint.json')
-        const tslintJson: JsonSchemaForTheTsLintConfigurationFiles = {
-            extends: ['@sourcegraph/tslint-config'],
+        console.log('📄 Adding .eslintrc.json')
+        const eslintJson: JSONSchemaForESLintConfigurationFiles = {
+            extends: ['@sourcegraph/eslint-config'],
+            parserOptions: {
+                project: 'tsconfig.json',
+            },
         }
-        await writeFile('tslint.json', JSON.stringify(tslintJson, null, 2))
+        await writeFile('eslint.json', JSON.stringify(eslintJson, null, 2))
     }
 
     console.log('📄 Adding .editorconfig')
@@ -154,13 +157,13 @@ async function main(): Promise<void> {
     )
 
     console.log('📄 Adding .gitignore')
-    await writeFile('.gitignore', ['dist/', 'node_modules/', '.cache/', ''].join('\n'))
+    await writeFile('.gitignore', ['dist/', 'node_modules/', '.cache/', 'yarn.lock', ''].join('\n'))
 
     if (await exists('package.json')) {
         console.log('📄 package.json already exists, skipping creation')
     } else {
         console.log('📄 Adding package.json')
-        const packageJson: JsonSchemaForNpmPackageJsonFiles = {
+        const packageJson: JSONSchemaForNPMPackageJsonFiles = {
             $schema: schema,
             name,
             description,
@@ -182,14 +185,14 @@ async function main(): Promise<void> {
             license,
             main: `dist/${name}.js`,
             scripts: {
-                tslint: "tslint -p tsconfig.json './src/**/*.ts'",
+                eslint: "eslint 'src/**/*.ts'",
                 typecheck: 'tsc -p tsconfig.json',
                 build: `parcel build --out-file dist/${name}.js src/${name}.ts`,
                 'symlink-package': 'mkdirp dist && lnfs ./package.json ./dist/package.json',
-                serve: `npm run symlink-package && parcel serve --no-hmr --out-file dist/${name}.js src/${name}.ts`,
+                serve: `yarn run symlink-package && parcel serve --no-hmr --out-file dist/${name}.js src/${name}.ts`,
                 'watch:typecheck': 'tsc -p tsconfig.json -w',
                 'watch:build': 'tsc -p tsconfig.dist.json -w',
-                'sourcegraph:prepublish': 'npm run typecheck && npm run build',
+                'sourcegraph:prepublish': 'yarn run typecheck && yarn run build',
             },
             browserslist: [
                 'last 1 Chrome versions',
@@ -234,15 +237,15 @@ async function main(): Promise<void> {
 
     console.log('📦 Installing dependencies')
     await exec(
-        'npm',
+        'yarn',
         [
-            'install',
-            '--save-dev',
+            'add',
+            '--dev',
             'sourcegraph',
             'typescript',
             'parcel-bundler',
             'tslint',
-            '@sourcegraph/tslint-config',
+            '@sourcegraph/eslint-config',
             '@sourcegraph/tsconfig',
             'lnfs-cli',
             'mkdirp',
