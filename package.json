@@ -23,7 +23,7 @@
   ],
   "license": "UNLICENSED",
   "scripts": {
-    "tslint": "tslint -p tsconfig.json -c tslint.json src/**/*.ts",
+    "eslint": "eslint 'src/**/*.ts'",
     "build": "tsc -p .",
     "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package.ts",
     "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis.ts",
@@ -31,7 +31,7 @@
     "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint.ts",
     "prettier": "prettier '**/*.{js?(on),ts}' --write --list-different",
     "semantic-release": "semantic-release",
-    "pre-commit": "yarn run tslint && yarn run prettier"
+    "pre-commit": "yarn run eslint && yarn run prettier"
   },
   "commitlint": {
     "extends": [
@@ -41,31 +41,31 @@
   "dependencies": {
     "chalk": "2.4.1",
     "execa": "1.0.0",
+    "git-url-parse": "^11.1.1",
     "inquirer": "6.2.1",
     "js-yaml": "3.13.1",
     "mz": "2.7.0",
     "npm-registry-client": "8.6.0",
     "request-promise": "4.2.2",
-    "source-map-support": "0.5.9",
-    "git-url-parse": "^11.1.1"
+    "source-map-support": "0.5.9"
   },
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
+    "@sourcegraph/eslint-config": "^0.16.0",
     "@sourcegraph/prettierrc": "3.0.3",
     "@sourcegraph/tsconfig": "4.0.1",
-    "@sourcegraph/tslint-config": "12.3.1",
     "@types/execa": "0.9.0",
+    "@types/git-url-parse": "9.0.0",
     "@types/inquirer": "0.0.44",
     "@types/js-yaml": "3.12.3",
     "@types/mz": "0.0.32",
     "@types/request-promise": "4.1.42",
-    "@types/git-url-parse": "9.0.0",
+    "eslint": "^6.8.0",
     "husky": "1.2.0",
     "json-schema-to-typescript": "6.1.0",
     "prettier": "2.0.3",
     "semantic-release": "15.12.5",
-    "tslint": "6.1.1",
     "typescript": "3.2.2"
   },
   "husky": {
