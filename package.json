@@ -59,7 +59,7 @@
     "@types/git-url-parse": "9.0.0",
     "@types/inquirer": "0.0.44",
     "@types/js-yaml": "3.12.3",
-    "@types/mz": "0.0.32",
+    "@types/mz": "2.7.0",
     "@types/request-promise": "4.1.42",
     "download-cli": "^1.1.1",
     "eslint": "^6.8.0",
