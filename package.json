@@ -46,7 +46,7 @@
     "js-yaml": "3.13.1",
     "mz": "2.7.0",
     "npm-registry-client": "8.6.0",
-    "request-promise": "4.2.2",
+    "request-promise": "4.2.5",
     "source-map-support": "0.5.9"
   },
   "devDependencies": {
@@ -60,7 +60,7 @@
     "@types/inquirer": "0.0.44",
     "@types/js-yaml": "3.12.3",
     "@types/mz": "2.7.0",
-    "@types/request-promise": "4.1.42",
+    "@types/request-promise": "4.1.46",
     "download-cli": "^1.1.1",
     "eslint": "^6.8.0",
     "husky": "1.2.0",
