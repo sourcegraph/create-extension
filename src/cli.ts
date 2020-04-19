@@ -135,6 +135,13 @@ async function main(): Promise<void> {
         await writeFile('eslint.json', JSON.stringify(eslintJson, null, 2))
     }
 
+    if (await exists('prettier.config.js')) {
+        console.log('prettier.config.js already exists, skipping creation')
+    } else {
+        console.log('📄 Adding prettier.config.js')
+        await writeFile('prettier.config.js', "module.exports = require('@sourcegraph/prettierrc')")
+    }
+
     console.log('📄 Adding .editorconfig')
     await writeFile(
         '.editorconfig',
