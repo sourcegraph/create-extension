@@ -122,8 +122,8 @@ async function main(): Promise<void> {
         await writeFile('tsconfig.json', JSON.stringify(tsconfigJson, null, 2))
     }
 
-    if (await exists('eslint.json')) {
-        console.log('📄 eslint.json already exists, skipping creation')
+    if (await exists('.eslintrc.json')) {
+        console.log('📄 .eslintrc.json already exists, skipping creation')
     } else {
         console.log('📄 Adding .eslintrc.json')
         const eslintJson: JSONSchemaForESLintConfigurationFiles = {
@@ -132,7 +132,7 @@ async function main(): Promise<void> {
                 project: 'tsconfig.json',
             },
         }
-        await writeFile('eslint.json', JSON.stringify(eslintJson, null, 2))
+        await writeFile('.eslintrc.json', JSON.stringify(eslintJson, null, 2))
     }
 
     if (await exists('prettier.config.js')) {
