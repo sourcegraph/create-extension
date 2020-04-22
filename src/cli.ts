@@ -273,7 +273,7 @@ async function main(): Promise<void> {
         await writeFile('README.md', readme)
     }
 
-    console.log('⚠️ Remove `"wip": true` from the package.json when this extension is ready for use.')
+    console.log(`⚠️  Remove ${chalk.bold('"wip": true')} from the package.json when this extension is ready for use.`)
 
     setTimeout(() => process.exit(0), 100)
 }
