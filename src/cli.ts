@@ -251,7 +251,7 @@ async function main(): Promise<void> {
             'sourcegraph',
             'typescript',
             'parcel-bundler',
-            'tslint',
+            'eslint',
             '@sourcegraph/eslint-config',
             '@sourcegraph/tsconfig',
             'lnfs-cli',
