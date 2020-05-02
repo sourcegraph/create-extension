@@ -164,7 +164,7 @@ async function main(): Promise<void> {
     )
 
     console.log('📄 Adding .gitignore')
-    await writeFile('.gitignore', ['dist/', 'node_modules/', '.cache/', 'yarn.lock', ''].join('\n'))
+    await writeFile('.gitignore', ['dist/', 'node_modules/', '.cache/', ''].join('\n'))
 
     if (await exists('package.json')) {
         console.log('📄 package.json already exists, skipping creation')
