@@ -29,7 +29,7 @@ async function main(): Promise<void> {
     console.log(['', 'Welcome to the Sourcegraph extension creator!', ''].join('\n'))
 
     const schema =
-        'https://raw.githubusercontent.com/sourcegraph/sourcegraph/master/shared/src/schema/extension.schema.json'
+        'https://raw.githubusercontent.com/sourcegraph/sourcegraph/main/client/shared/src/schema/extension.schema.json'
     let name: string | undefined
     let repository: Repository | undefined
     let description: string | undefined
