@@ -60,7 +60,7 @@
     "@types/js-yaml": "3.12.5",
     "@types/mz": "2.7.1",
     "download-cli": "^1.1.1",
-    "eslint": "^7.10.0",
+    "eslint": "^7.12.1",
     "husky": "1.2.0",
     "json-schema-to-typescript": "8.2.0",
     "prettier": "2.1.2",
