@@ -247,7 +247,14 @@ async function main(): Promise<void> {
         if (testsEnabled) {
             packageJson.scripts = packageJson.scripts ?? {}
             packageJson.scripts.test =
-                'TS_NODE_COMPILER_OPTIONS=\'{"module":"commonjs"}\' mocha --require ts-node/register --require source-map-support/register --recursive --watch-extensions ts, --timeout 200 \'src/**/*.test.ts\''
+                'TS_NODE_COMPILER_OPTIONS=\'{"module":"commonjs"}\' mocha'
+            packageJson.mocha = {
+                recursive: true,
+                extensions: 'ts',
+                timeout: 200,
+                spec: 'src/**/*.test.ts',
+                require: ['ts-node/register', 'source-map-support/register'],
+            }
         }
 
         await writeFile('package.json', JSON.stringify(packageJson, null, 2))
