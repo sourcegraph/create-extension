@@ -246,8 +246,7 @@ async function main(): Promise<void> {
 
         if (testsEnabled) {
             packageJson.scripts = packageJson.scripts ?? {}
-            packageJson.scripts.test =
-                'TS_NODE_COMPILER_OPTIONS=\'{"module":"commonjs"}\' mocha'
+            packageJson.scripts.test = 'TS_NODE_COMPILER_OPTIONS=\'{"module":"commonjs"}\' mocha'
             packageJson.mocha = {
                 recursive: true,
                 extensions: 'ts',
