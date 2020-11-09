@@ -16,6 +16,41 @@ interface Repository {
     directory?: string
 }
 
+/**
+ * Flag indicating whether to include test tooling in the project, namely a test
+ * framework (mocha), extension API stubs, and a sample test.
+ *
+ * TODO: in the future, make this an option chosen by the user.
+ */
+const testsEnabled = true
+
+/**
+ * Module dependencies to add to package.json as devDependencies
+ */
+const devDependencies: string[] = [
+    'sourcegraph',
+    'typescript',
+    'parcel-bundler',
+    'eslint',
+    '@sourcegraph/eslint-config',
+    '@sourcegraph/tsconfig',
+    'lnfs-cli',
+    'mkdirp',
+]
+
+/**
+ * Module dependencies that are used for automated tests. Used if `testsEnabled` is true.
+ */
+const devDependenciesForTests: string[] = [
+    '@sourcegraph/extension-api-stubs',
+    'mocha',
+    '@types/mocha',
+    'mock-require',
+    '@types/mock-require',
+    'ts-node',
+    'source-map-support',
+]
+
 async function getHttpsGitRemoteUrl(): Promise<string | undefined> {
     try {
         const gitUrl = GitUrlParse((await exec.shell('git remote get-url origin')).stdout)
@@ -208,6 +243,19 @@ async function main(): Promise<void> {
                 'last 1 Safari versions',
             ],
         }
+
+        if (testsEnabled) {
+            packageJson.scripts = packageJson.scripts ?? {}
+            packageJson.scripts.test = 'TS_NODE_COMPILER_OPTIONS=\'{"module":"commonjs"}\' mocha'
+            packageJson.mocha = {
+                recursive: true,
+                extensions: 'ts',
+                timeout: 200,
+                spec: 'src/**/*.test.ts',
+                require: ['ts-node/register', 'source-map-support/register'],
+            }
+        }
+
         await writeFile('package.json', JSON.stringify(packageJson, null, 2))
     }
 
@@ -236,6 +284,24 @@ async function main(): Promise<void> {
                 '',
             ].join('\n')
         )
+        await writeFile(
+            `src/${name}.test.ts`,
+            [
+                "import mock from 'mock-require'",
+                "import { createStubSourcegraphAPI, createStubExtensionContext } from '@sourcegraph/extension-api-stubs'",
+                'const sourcegraph = createStubSourcegraphAPI()',
+                "mock('sourcegraph', sourcegraph)",
+                '',
+                `import { activate } from './${name}'`,
+                '',
+                `describe('${name}', () => {`,
+                "    it('should activate successfully', async () => {",
+                '        const context = createStubExtensionContext()',
+                '        await activate(context)',
+                '    })',
+                '})',
+            ].join('\n')
+        )
     } catch (err) {
         if (err.code !== 'EEXIST') {
             throw err
@@ -243,22 +309,8 @@ async function main(): Promise<void> {
     }
 
     console.log('📦 Installing dependencies')
-    await exec(
-        'yarn',
-        [
-            'add',
-            '--dev',
-            'sourcegraph',
-            'typescript',
-            'parcel-bundler',
-            'eslint',
-            '@sourcegraph/eslint-config',
-            '@sourcegraph/tsconfig',
-            'lnfs-cli',
-            'mkdirp',
-        ],
-        { stdio: 'inherit' }
-    )
+    const dependencies = testsEnabled ? [...devDependencies, ...devDependenciesForTests] : devDependencies
+    await exec('yarn', ['add', '--dev', ...dependencies], { stdio: 'inherit' })
 
     if (await exists('README.md')) {
         console.log('📄 README.md already exists, skipping creation.')
