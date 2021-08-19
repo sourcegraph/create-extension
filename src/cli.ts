@@ -30,12 +30,16 @@ const testsEnabled = true
 const devDependencies: string[] = [
     'sourcegraph',
     'typescript',
-    'parcel-bundler',
     'eslint',
     '@sourcegraph/eslint-config',
     '@sourcegraph/tsconfig',
-    'lnfs-cli',
-    'mkdirp',
+    // Pin versions for webpack dependencies to prevent incompatibility with our `webpack.config.js`.
+    // Periodically test and upgrade them as a unit.
+    'webpack@5.51.1',
+    'webpack-cli@4.8.0',
+    'webpack-dev-server@3.11.2',
+    'ts-loader@9.2.5',
+    'copy-webpack-plugin@9.0.1',
 ]
 
 /**
@@ -166,6 +170,7 @@ async function main(): Promise<void> {
             parserOptions: {
                 project: 'tsconfig.json',
             },
+            ignorePatterns: ['webpack.config.js'],
         }
         await writeFile('.eslintrc.json', JSON.stringify(eslintJson, null, 2))
     }
@@ -201,6 +206,59 @@ async function main(): Promise<void> {
     console.log('📄 Adding .gitignore')
     await writeFile('.gitignore', ['dist/', 'node_modules/', '.cache/', ''].join('\n'))
 
+    if (await exists('webpack.config.js')) {
+        console.log('📄 webpack.config.js already exists, skipping creation')
+    } else {
+        console.log('📄 Adding webpack.config.js')
+        await writeFile(
+            'webpack.config.js',
+            [
+                "const path = require('path')",
+                "const CopyPlugin = require('copy-webpack-plugin')",
+                '',
+                'module.exports = {',
+                `  entry: './src/${name}.ts',`,
+                '  module: {',
+                '    rules: [',
+                '      {',
+                '        test: /.ts?$/,',
+                "        use: 'ts-loader',",
+                '        exclude: /node_modules/,',
+                '      },',
+                '    ],',
+                '  },',
+                '  resolve: {',
+                "    extensions: ['.ts', '.js'],",
+                '  },',
+                '  output: {',
+                "    path: path.resolve(__dirname, 'dist'),",
+                `    filename: '${name}.js',`,
+                '    library: {',
+                "      type: 'umd',",
+                '    },',
+                "    globalObject: 'self',",
+                '  },',
+                '  devServer: {',
+                "    contentBase: path.join(__dirname, 'dist'),",
+                '    compress: true,',
+                '    port: 1234,',
+                '    inline: false,',
+                '    headers: {',
+                "      'Access-Control-Allow-Origin': '*',",
+                '    },',
+                '    writeToDisk: true,',
+                '  },',
+                '  plugins: [',
+                '    new CopyPlugin({',
+                "      patterns: [{ from: './package.json', to: 'package.json' }],",
+                '    }),',
+                '  ],',
+                '}',
+                '',
+            ].join('\n')
+        )
+    }
+
     if (await exists('package.json')) {
         console.log('📄 package.json already exists, skipping creation')
     } else {
@@ -229,9 +287,8 @@ async function main(): Promise<void> {
             scripts: {
                 eslint: "eslint 'src/**/*.ts'",
                 typecheck: 'tsc -p tsconfig.json',
-                build: `parcel build --out-file dist/${name}.js src/${name}.ts`,
-                'symlink-package': 'mkdirp dist && lnfs ./package.json ./dist/package.json',
-                serve: `yarn run symlink-package && parcel serve --no-hmr --out-file dist/${name}.js src/${name}.ts`,
+                build: 'webpack --config webpack.config.js',
+                serve: 'npx webpack serve',
                 'watch:typecheck': 'tsc -p tsconfig.json -w',
                 'watch:build': 'tsc -p tsconfig.dist.json -w',
                 'sourcegraph:prepublish': 'yarn run typecheck && yarn run build',
