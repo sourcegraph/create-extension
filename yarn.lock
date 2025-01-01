@@ -439,10 +439,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/git-url-parse@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@types/git-url-parse/-/git-url-parse-9.0.0.tgz#aac1315a44fa4ed5a52c3820f6c3c2fb79cbd12d"
-  integrity sha512-kA2RxBT/r/ZuDDKwMl+vFWn1Z0lfm1/Ik6Qb91wnSzyzCDa/fkM8gIOq6ruB7xfr37n6Mj5dyivileUVKsidlg==
+"@types/git-url-parse@9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@types/git-url-parse/-/git-url-parse-9.0.3.tgz#7ee022f8fa06ea74148aa28521cbff85915ac09d"
+  integrity sha512-Wrb8zeghhpKbYuqAOg203g+9YSNlrZWNZYvwxJuDF4dTmerijqpnGbI79yCuPtHSXHPEwv1pAFUB4zsSqn82Og==
 
 "@types/glob@^7.1.1":
   version "7.1.1"
